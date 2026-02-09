@@ -2,6 +2,9 @@ package com.project.fitness.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.List;
 
 
 @Entity
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -18,14 +22,29 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore //springboot auto convertw data to json so we prohibit it
     private List<Activity> activities = new ArrayList<>();
 
-    public User (String id, String email, String password, String firstName, String lastName, LocalDateTime createdAt, LocalDateTime updatedAt, List<Activity> activities) {
+    public User() {
+        // Default constructor for JPA
+    }
+
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(String id, String email, String password, String firstName, String lastName, LocalDateTime createdAt, LocalDateTime updatedAt, List<Activity> activities) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -98,7 +117,5 @@ public class User {
 
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
-
-
     }
 }

@@ -14,8 +14,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse register(RegisterRequest request) {
-        User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName());
+//        User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName());
 
+        User user = User.builder() // can be done using constructors as well but this is more readable and constructor causes tight coupliing
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .password(request.getPassword())
+                .build(); //done using builder
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
     }
