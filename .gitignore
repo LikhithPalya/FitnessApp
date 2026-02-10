@@ -45,3 +45,4 @@ FitnessApp/
 .idea/
 *.log
 
+src/main/resources/application.properties
