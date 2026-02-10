@@ -32,3 +32,16 @@ build/
 ### VS Code ###
 .vscode/
 .env
+# Maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+# Local / generated folders
+FitnessApp/
+
+# OS / IDE noise
+.DS_Store
+.idea/
+*.log
+
