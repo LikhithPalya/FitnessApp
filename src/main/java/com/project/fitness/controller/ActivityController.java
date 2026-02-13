@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
-@RequestMapping("api/activity")
+@RequestMapping("api/activities")
 @RequiredArgsConstructor
 public class ActivityController {
 
@@ -22,8 +22,10 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.trackActivity(request));
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<ActivityResponse>> trackActivity(){
-//        return null;
-//    }
+    @GetMapping
+    public ResponseEntity<List<ActivityResponse>> getUserActivities(
+            @RequestHeader(value = "X-User-ID") String userId //as we get userId from requestheaders
+    ) { //return the activities of the specific user based on user id as a header in url in the get request
+        return ResponseEntity.ok(activityService.getUserActivities(userId));
+    }
 }

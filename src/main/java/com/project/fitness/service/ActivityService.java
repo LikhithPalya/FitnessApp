@@ -7,8 +7,12 @@ import com.project.fitness.model.User;
 import com.project.fitness.repository.ActivityRepository;
 import com.project.fitness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,4 +61,13 @@ public class ActivityService {
     }
 
 
+    public @Nullable List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activityList = activityRepository.findByUserId(userId); //findAllByUserId is not a default method, so we make a custom method
+        //S1 - activity transform to ativityrespomse
+        // S2 collcet in list and return
+
+        return activityList.stream()
+                .map(this::mapToReponse)
+                .collect(Collectors.toList());
+    }
 }
