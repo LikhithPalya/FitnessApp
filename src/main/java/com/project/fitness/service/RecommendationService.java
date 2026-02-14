@@ -10,6 +10,8 @@ import com.project.fitness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RecommendationService {
@@ -36,5 +38,9 @@ public class RecommendationService {
                 .build();
 
         return recommendationRepository.save(recommendation);
+    }
+
+    public List<Recommendation> getUserRecommendation(String userId) {
+        return recommendationRepository.findByUserId(userId); // we dont want recommendation i.e id iinstead we want user mapped with recommendation
     }
 }
