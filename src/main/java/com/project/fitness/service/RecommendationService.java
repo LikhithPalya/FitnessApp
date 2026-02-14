@@ -43,4 +43,8 @@ public class RecommendationService {
     public List<Recommendation> getUserRecommendation(String userId) {
         return recommendationRepository.findByUserId(userId); // we dont want recommendation i.e id iinstead we want user mapped with recommendation
     }
+
+    public List<Recommendation> getActivityRecommendation(String activityid) {
+        return recommendationRepository.findByActivityId(activityid);
+    }
 }

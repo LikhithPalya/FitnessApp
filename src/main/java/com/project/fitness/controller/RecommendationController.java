@@ -33,6 +33,13 @@ public class RecommendationController {
         return ResponseEntity.ok(recommendationList);
     }
 
+    @GetMapping("/activity/{activityid}")
+    public ResponseEntity<List<Recommendation>> getActivityRecommendation(
+            @PathVariable("activityid") String activityid //accepitng a dynamic variable via the path
+    ){
+        List<Recommendation> recommendationList = recommendationService.getActivityRecommendation(activityid); //a single user can have multiple recommendations
+        return ResponseEntity.ok(recommendationList);
+    }
 
 
 }

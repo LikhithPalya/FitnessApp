@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface RecommendationRepository extends JpaRepository<Recommendation, String> {
     List<Recommendation> findByUserId(String userId); //select by userId (sql language)
+
+    List<Recommendation> findByActivityId(String activityid);
 }
