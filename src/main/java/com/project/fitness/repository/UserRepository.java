@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String> { //as user's PK type is string
+public interface UserRepository extends JpaRepository<User,String> {
+    User findByEmail(String email); //as user's PK type is string
 
 }

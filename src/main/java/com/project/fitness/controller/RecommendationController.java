@@ -4,7 +4,6 @@ import com.project.fitness.dto.RecommendationRequest;
 import com.project.fitness.model.Recommendation;
 import com.project.fitness.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +39,4 @@ public class RecommendationController {
         List<Recommendation> recommendationList = recommendationService.getActivityRecommendation(activityid); //a single user can have multiple recommendations
         return ResponseEntity.ok(recommendationList);
     }
-
-
 }

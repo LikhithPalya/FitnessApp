@@ -23,6 +23,9 @@ public class User {
     private String firstName;
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER; //anyone logging in is by default a user
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -36,6 +39,19 @@ public class User {
     public User() {
         // Default constructor for JPA
     }
+
+    public User(String id, String email, String password, String firstName, String lastName, UserRole role, LocalDateTime createdAt, LocalDateTime updatedAt, List<Activity> activities) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.activities = activities;
+    }
+
 
     public User(String email, String password, String firstName, String lastName) {
         this.email = email;
