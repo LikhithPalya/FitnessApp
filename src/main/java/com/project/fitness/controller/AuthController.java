@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +31,12 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+
 //    public AuthController(UserService userService) { //spring managed component and we need one instance of UserService in this controller
 //        this.userService = userService;
 //    } WE USE LONBOK
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> Login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication;
         try {
@@ -45,9 +48,13 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            String token = jwtUtils.generateToken(user.getId(), user.getRole().name());
-            jwtUtils.validateToken(loginRequest.getEmail());
-
+            String token = jwtUtils.generateToken(user.getId(), user.getRole().name()); //it is a enum so we add .getname()
+            LoginResponse loginCreds = new LoginResponse(token, userService.mapToResponse(user));
+            return ResponseEntity.ok(loginCreds);
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            System.out.println(e);
+            return ResponseEntity.status(401).build();
         }
     }
 

@@ -18,6 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(unique = true)
     private String email;
     private String password;
     private String firstName;
@@ -111,6 +112,14 @@ public class User {
         this.lastName = lastName;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -134,4 +143,6 @@ public class User {
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
+
+
 }

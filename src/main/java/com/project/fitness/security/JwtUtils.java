@@ -5,9 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -15,12 +14,16 @@ import java.util.Date;
 import java.security.Key;
 import java.util.List;
 
-
+@Component
 public class JwtUtils {
     //helper to generate and validate jwt token
 
-    private String jwtSecret = "";
-    private int jwtExpirationInSeconds = 172800000;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration}")
+    private long jwtExpirationInSeconds;
 
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
