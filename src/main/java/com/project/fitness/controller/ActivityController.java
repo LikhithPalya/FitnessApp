@@ -7,6 +7,7 @@ import com.project.fitness.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.*;
 
@@ -19,7 +20,8 @@ public class ActivityController {
 
     @PostMapping
     public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request) {
-        return ResponseEntity.ok(activityService.trackActivity(request));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(activityService.trackActivity(request, email));
     }
 
     @GetMapping

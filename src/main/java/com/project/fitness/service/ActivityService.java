@@ -21,10 +21,12 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
-    public ActivityResponse trackActivity(ActivityRequest request) { //logic used to track actvity qand stored at db level
+    public ActivityResponse trackActivity(ActivityRequest request, String email) { //logic used to track actvity qand stored at db level
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("invalid user: " + request.getUserId()));
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("invalid user: " + email);
+        }
 
         Activity activity = Activity.builder()
                 .user(user) // since activity request doesnt have user obejct we wil fetch from db using userId

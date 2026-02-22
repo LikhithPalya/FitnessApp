@@ -33,12 +33,12 @@ public class JwtUtils {
         return null;
     }
 
-    public String generateToken(String userId, String role) {
+    public String generateToken(String email, String role) {
 
 
         return Jwts.builder()
-                .subject(userId)
-                .claim("roles", List.of(new SimpleGrantedAuthority(role)))
+                .subject(email)
+                .claim("roles", List.of(role))
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime()+jwtExpirationInSeconds))
                 .signWith(key())
@@ -60,7 +60,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
-    public String getUserNameFromToken(String jwt){
+    public String getEmailFromToken(String jwt){
         return Jwts.parser().verifyWith((SecretKey) key())
                 .build().parseSignedClaims(jwt)
                 .getPayload().getSubject();
