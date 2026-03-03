@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.function.ThrowingSupplier;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,18 +31,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("Authentication Filter called");
+        System.out.println("auth filter called");
+        boolean authenticationSuccessful = false;
         try{
             String jwt = parseJwt(request);
             System.out.println("jwt is "+jwt);
 
-            if (jwt == null){
-                throw new BadCredentialsException("Bad credentials");
-            }
-
             if(jwt != null && jwtUtils.validateToken(jwt)){
                 System.out.println("JWT validated and token = "+ jwt);
                 String email = jwtUtils.getEmailFromToken(jwt);
+                System.out.println("email is "+email);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
                 Claims claims = jwtUtils.getClaimsFromToken(jwt);
@@ -61,13 +58,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                authenticationSuccessful = true;
             }
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Authentication Failed");
+            SecurityContextHolder.clearContext();
         }
+        // continue request processing
+        System.out.println("came to filerter chain line of code ");
         filterChain.doFilter(request, response);
-        System.out.println("Authentication successful");
+
+        if (authenticationSuccessful) {
+            System.out.println("Authentication successful");
+        }
     }
 
     private String parseJwt(HttpServletRequest request) {

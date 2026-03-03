@@ -8,6 +8,7 @@ import com.project.fitness.model.User;
 import com.project.fitness.repository.UserRepository;
 import com.project.fitness.security.JwtUtils;
 import com.project.fitness.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -51,7 +52,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<UserResponse> register( @Valid @RequestBody RegisterRequest registerRequest) {
+        //TODO - validation code but we can also use annotation :) --> done by adding @Valid here and  notBlank in RegisterRequest
         return ResponseEntity.ok(userService.register(registerRequest)); //sending status code 200
     }
 
